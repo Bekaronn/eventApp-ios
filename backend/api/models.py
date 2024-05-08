@@ -10,7 +10,7 @@ class Event(models.Model):
     tickets_available = models.IntegerField(default=0)
     duration = models.IntegerField()
     event_type = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.IntegerField()
 
 class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
