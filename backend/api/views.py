@@ -3,11 +3,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import Event, Booking
 from .serializers import EventSerializer, BookingSerializer, UserSerializer
-from django.contrib.auth.models import User
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.tokens import AccessToken
+from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
+from rest_framework.views import APIView
 
 class UserRegistrationAPIView(generics.CreateAPIView):
     serializer_class = UserSerializer
@@ -19,8 +17,18 @@ class UserRegistrationAPIView(generics.CreateAPIView):
             return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class UserLoginAPIView(TokenObtainPairView):
-    serializer_class = TokenObtainPairSerializer
+class UserLoginAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key})
+        else:
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class UserRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
@@ -55,7 +63,7 @@ class BookingRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
     permission_classes = [IsAuthenticated]  
-    authentication_classes = [JWTAuthentication]
+
 
 class BookingListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = BookingSerializer
