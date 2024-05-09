@@ -10,24 +10,42 @@ import UIKit
 class LoginViewController: UIViewController {
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var alertLabel: UILabel!
     
     private var username: String = ""
     private var password: String = ""
     
     override func viewDidLoad() {
+        alertLabel.isHidden = true
         super.viewDidLoad()
         usernameTextField.delegate = self
         passwordTextField.delegate = self
     }
     
+    override func viewIsAppearing(_ animated: Bool) {
+        isAuthenticated()
+    }
+    
+    func isAuthenticated() {
+        if UserAPIManager.shared.isAuthenticated() == true {
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "goToProfile", sender: self)
+            }
+        }
+    }
+    
     @IBAction func loginButton(_ sender: Any) {
         print(username, password)
+        alertLabel.isHidden = true
         UserAPIManager.shared.authenticateUser(username: username, password: password) { token, error in
             if let token = token {
                 print("Successfully authenticated. JWT token: \(token)")
                 self.login(withToken: token)
             } else if let error = error {
                 print("Error during authentication: \(error)")
+                DispatchQueue.main.async {
+                    self.alertLabel.isHidden = false
+                }
             }
         }
     }
@@ -37,7 +55,7 @@ class LoginViewController: UIViewController {
         UserAPIManager.shared.setAuthenticated(true)
     
         DispatchQueue.main.async {
-            self.performSegue(withIdentifier: "goToNext", sender: self)
+            self.performSegue(withIdentifier: "goToProfile", sender: self)
         }
     }
 }

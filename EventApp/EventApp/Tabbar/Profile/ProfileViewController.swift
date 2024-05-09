@@ -16,33 +16,21 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
     private var user: UserProfile = UserProfile(id: 0, username: "", email: "", first_name: "", last_name: "")
     
     override func viewDidLoad() {
-        super.viewDidLoad()
         fetchUser()
+        super.viewDidLoad()
+        navigationItem.hidesBackButton = true
         usernameTextField.text = user.username
         emailTextField.text = user.email
         firstnameTextField.text = user.first_name
         lastnameTextField.text = user.last_name
         
-        usernameTextField.delegate = self
-        emailTextField.delegate = self
+        usernameTextField.isEnabled = false
+        usernameTextField.textColor = .gray
+        emailTextField.isEnabled = false
+        emailTextField.textColor = .gray
+ 
         firstnameTextField.delegate = self
         lastnameTextField.delegate = self
-    }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == firstnameTextField {
-            if let text = textField.text {
-                user.first_name = text
-                print(text + "text maken 1")
-            }
-        }
-        if textField == lastnameTextField {
-            if let text = textField.text {
-                user.last_name = text
-                print(text + "text maken 1")
-            }
-        }
-        return true
     }
     
     func fetchUser() {
@@ -64,21 +52,25 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func saveButton(_ sender: Any) {
+        UserAPIManager.shared.updateUser(firstName: self.firstnameTextField.text ?? "", lastName: self.lastnameTextField.text ?? "") { success, error in
+            if success {
+                print("User updated successfully")
+            } else {
+                if let error = error {
+                    print("Error updating user: \(error)")
+                } else {
+                    print("Error updating user")
+                }
+            }
+        }
+
     }
     
     @IBAction func logoutButton(_ sender: Any) {
         UserAPIManager.shared.setAuthenticated(false)
+        UserAPIManager.shared.saveToken("")
+        DispatchQueue.main.async {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
-    
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

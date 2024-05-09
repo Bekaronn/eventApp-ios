@@ -23,6 +23,7 @@ class EventViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         fetchEvents()
+        fetchUser()
     }
     
     
@@ -43,6 +44,24 @@ class EventViewController: UIViewController {
                 self.collectionView.reloadData()
             }
         }
+    }
+    
+    func fetchUser() {
+        UserAPIManager.shared.fetchUserProfile { result in
+            switch result {
+            case .success(let userProfile):
+                UserAPIManager.shared.user = userProfile
+            case .failure(let error):
+                print("Error fetching user profile: \(error)")
+            }
+        }
+    }
+    
+    @IBAction func notificatoinButton(_ sender: Any) {
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "goToNot", sender: self)
+        }
+        
     }
     
     @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
@@ -101,19 +120,12 @@ extension EventViewController: UICollectionViewDelegate, UICollectionViewDataSou
         } else {
             print("Invalid URL")
         }
-        
-        //        let dateFormatter = DateFormatter()
-        //        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        //
-        //        if let date = dateFormatter.date(from: event.date) {
-        //            dateFormatter.dateFormat = "dd MMMM"
-        //            dateFormatter.locale = Locale(identifier: "ru_RU")
-        //            let dayAndMonthString = dateFormatter.string(from: date)
-        //            cell.dateLabel.text = dayAndMonthString
-        //        } else {
-        //            print("Невозможно преобразовать строку в дату")
-        //        }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        EventAPIManager.shared.selectedEvent = events[indexPath.row].id
+        performSegue(withIdentifier: "goToDetail", sender: indexPath)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

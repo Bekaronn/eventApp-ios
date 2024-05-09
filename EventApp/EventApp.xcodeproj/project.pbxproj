@@ -13,7 +13,8 @@
 		E716ADC32BEA5B8300AD3676 /* EventAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E716ADC22BEA5B8300AD3676 /* EventAPIManager.swift */; };
 		E716ADC82BEA644900AD3676 /* EventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E716ADC72BEA644900AD3676 /* EventViewController.swift */; };
 		E716ADCA2BEA64C700AD3676 /* EventCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E716ADC92BEA64C700AD3676 /* EventCollectionViewCell.swift */; };
-		E75EA08F2BECBF8300872590 /* PreProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75EA08E2BECBF8300872590 /* PreProfileViewController.swift */; };
+		E75EA0912BED0D1000872590 /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75EA0902BED0D1000872590 /* EventDetailViewController.swift */; };
+		E75EA0932BED264100872590 /* TicketsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75EA0922BED264100872590 /* TicketsTableViewCell.swift */; };
 		E76B0D1F2BE97A6100D71910 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76B0D1E2BE97A6100D71910 /* AppDelegate.swift */; };
 		E76B0D212BE97A6100D71910 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76B0D202BE97A6100D71910 /* SceneDelegate.swift */; };
 		E76B0D232BE97A6100D71910 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76B0D222BE97A6100D71910 /* ViewController.swift */; };
@@ -35,7 +36,8 @@
 		E716ADC22BEA5B8300AD3676 /* EventAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAPIManager.swift; sourceTree = "<group>"; };
 		E716ADC72BEA644900AD3676 /* EventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewController.swift; sourceTree = "<group>"; };
 		E716ADC92BEA64C700AD3676 /* EventCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCollectionViewCell.swift; sourceTree = "<group>"; };
-		E75EA08E2BECBF8300872590 /* PreProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreProfileViewController.swift; sourceTree = "<group>"; };
+		E75EA0902BED0D1000872590 /* EventDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewController.swift; sourceTree = "<group>"; };
+		E75EA0922BED264100872590 /* TicketsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketsTableViewCell.swift; sourceTree = "<group>"; };
 		E76B0D1B2BE97A6100D71910 /* EventApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EventApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E76B0D1E2BE97A6100D71910 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E76B0D202BE97A6100D71910 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 			children = (
 				E716ADC72BEA644900AD3676 /* EventViewController.swift */,
 				E716ADC92BEA64C700AD3676 /* EventCollectionViewCell.swift */,
+				E75EA0902BED0D1000872590 /* EventDetailViewController.swift */,
 			);
 			path = Event;
 			sourceTree = "<group>";
@@ -76,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				E7F192692BEB8E86001B56A7 /* TicketsViewController.swift */,
+				E75EA0922BED264100872590 /* TicketsTableViewCell.swift */,
 			);
 			path = Tickets;
 			sourceTree = "<group>";
@@ -86,7 +90,6 @@
 				E7F192632BEB68BF001B56A7 /* LoginViewController.swift */,
 				E7F1926E2BEC0EC7001B56A7 /* ProfileViewController.swift */,
 				E7F192722BEC0EEC001B56A7 /* RegisterViewController.swift */,
-				E75EA08E2BECBF8300872590 /* PreProfileViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -241,7 +244,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E75EA08F2BECBF8300872590 /* PreProfileViewController.swift in Sources */,
 				E76B0D232BE97A6100D71910 /* ViewController.swift in Sources */,
 				E716ADC82BEA644900AD3676 /* EventViewController.swift in Sources */,
 				E76B0D1F2BE97A6100D71910 /* AppDelegate.swift in Sources */,
@@ -249,6 +251,7 @@
 				E716ADCA2BEA64C700AD3676 /* EventCollectionViewCell.swift in Sources */,
 				E76B0D212BE97A6100D71910 /* SceneDelegate.swift in Sources */,
 				E7F192732BEC0EEC001B56A7 /* RegisterViewController.swift in Sources */,
+				E75EA0932BED264100872590 /* TicketsTableViewCell.swift in Sources */,
 				E7F192642BEB68BF001B56A7 /* LoginViewController.swift in Sources */,
 				E716ADC12BEA5A7900AD3676 /* User.swift in Sources */,
 				E7F192682BEB8C6A001B56A7 /* BookingAPIManager.swift in Sources */,
@@ -256,6 +259,7 @@
 				E716ADBF2BEA5A6D00AD3676 /* Booking.swift in Sources */,
 				E7F1926F2BEC0EC7001B56A7 /* ProfileViewController.swift in Sources */,
 				E7F192612BEB6881001B56A7 /* UserAPIManager.swift in Sources */,
+				E75EA0912BED0D1000872590 /* EventDetailViewController.swift in Sources */,
 				E7F1926A2BEB8E86001B56A7 /* TicketsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
