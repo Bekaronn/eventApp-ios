@@ -13,7 +13,45 @@ class UserAPIManager {
     private let isAuthenticatedKey = "isAuthenticated"
     private let accessTokenKey = "accessToken"
     
-    func authenticateUser(user: User, completion: @escaping (String?, Error?) -> Void) {
+    func registerUser(username: String, email: String, password: String, completion: @escaping (Bool, String?, Error?) -> Void) {
+        let url = URL(string: "http://localhost:8000/api/register/")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        let userData = ["username": username, "email": email, "password": password]
+        
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: userData, options: []) else {
+            print("Error encoding user data into JSON")
+            completion(false, nil, nil)
+            return
+        }
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = httpBody
+        let session = URLSession.shared
+
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error: \(error)")
+                completion(false, nil, error)
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("No HTTP response received")
+                completion(false, nil, nil)
+                return
+            }
+            
+            if httpResponse.statusCode == 201 {
+                let message = "User registered successfully"
+                completion(true, message, nil)
+            } else {
+                completion(false, nil, nil)
+            }
+        }
+        task.resume()
+    }
+    
+    func authenticateUser(username: String, password: String, completion: @escaping (String?, Error?) -> Void) {
         let urlString = "http://localhost:8000/api/login/"
         
         var request = URLRequest(url: URL(string: urlString)!)
@@ -22,8 +60,8 @@ class UserAPIManager {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let parameters: [String: Any] = [
-            "username": user.username,
-            "password": user.password
+            "username": username,
+            "password": password
         ]
         request.httpBody = try? JSONSerialization.data(withJSONObject: parameters)
         
@@ -50,6 +88,42 @@ class UserAPIManager {
         }
         task.resume()
     }
+    
+    func fetchUserProfile(completion: @escaping (Result<UserProfile, Error>) -> Void) {
+        guard let url = URL(string: "http://localhost:8000/api/user/") else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(getToken() ?? "")", forHTTPHeaderField: "Authorization")
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                completion(.failure(NSError(domain: "Server error", code: 0, userInfo: nil)))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(NSError(domain: "No data", code: 0, userInfo: nil)))
+                return
+            }
+
+            do {
+                let userProfile = try JSONDecoder().decode(UserProfile.self, from: data)
+                completion(.success(userProfile))
+            } catch {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
+    
     
     func isAuthenticated() -> Bool {
         return UserDefaults.standard.bool(forKey: isAuthenticatedKey)

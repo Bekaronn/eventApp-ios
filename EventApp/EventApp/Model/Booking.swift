@@ -9,7 +9,7 @@ import Foundation
 
 struct BookingModel: Codable {
     let id: Int
-    let user: User
+    let user: UserProfile
     let event: EventModel
     let booked_at: String
 }

@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
+from rest_framework_simplejwt.tokens import AccessToken
 
 class UserRegistrationAPIView(generics.CreateAPIView):
     serializer_class = UserSerializer
@@ -22,10 +22,29 @@ class UserRegistrationAPIView(generics.CreateAPIView):
 class UserLoginAPIView(TokenObtainPairView):
     serializer_class = TokenObtainPairSerializer
 
+class UserRetrieveAPIView(generics.RetrieveAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
 
 class EventListAPIView(generics.ListAPIView):
-    queryset = Event.objects.all()
     serializer_class = EventSerializer
+
+    def get_queryset(self):
+        queryset = Event.objects.all()
+        event_type = self.request.query_params.get('event_type', None)
+        title = self.request.query_params.get('title', None)
+
+        if event_type:
+            queryset = queryset.filter(event_type__icontains=event_type)
+
+        if title:
+            queryset = queryset.filter(title__icontains=title)
+
+        return queryset
 
 class EventRetrieveAPIView(generics.RetrieveAPIView):
     queryset = Event.objects.all()

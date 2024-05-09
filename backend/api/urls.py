@@ -5,7 +5,8 @@ from .views import (
     BookingListCreateAPIView,
     BookingRetrieveUpdateDestroyAPIView,
     UserRegistrationAPIView,
-    UserLoginAPIView
+    UserLoginAPIView,
+    UserRetrieveAPIView,
 )
 
 urlpatterns = [
@@ -20,4 +21,6 @@ urlpatterns = [
     # Маршруты для аккаунта
     path('register/', UserRegistrationAPIView.as_view(), name='register'),
     path('login/', UserLoginAPIView.as_view(), name='login'),
+
+    path('user/', UserRetrieveAPIView.as_view(), name='user_retrieve'),
 ]

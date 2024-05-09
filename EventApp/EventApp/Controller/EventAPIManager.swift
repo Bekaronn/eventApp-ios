@@ -11,8 +11,10 @@ class EventAPIManager {
     static let shared = EventAPIManager()
     let baseURL = "http://localhost:8000/api/events/"
     
-    func fetchEvents(completion: @escaping ([EventModel]?, Error?) -> Void) {
-        guard let url = URL(string: baseURL) else {
+    func fetchEvents(type: String, search: String, completion: @escaping ([EventModel]?, Error?) -> Void) {
+        let urll = "\(baseURL)?event_type=\(type)&title=\(search)"
+        
+        guard let url = URL(string: urll) else {
             completion(nil, NSError(domain: "Invalid URL", code: 0, userInfo: nil))
             return
         }

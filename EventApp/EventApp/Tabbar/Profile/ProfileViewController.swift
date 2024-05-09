@@ -2,45 +2,74 @@
 //  ProfileViewController.swift
 //  EventApp
 //
-//  Created by Bekarys on 08.05.2024.
+//  Created by Bekarys on 09.05.2024.
 //
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var usernameTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var firstnameTextField: UITextField!
+    @IBOutlet weak var lastnameTextField: UITextField!
     
-    private var username: String = ""
-    private var password: String = ""
+    private var user: UserProfile = UserProfile(id: 0, username: "", email: "", first_name: "", last_name: "")
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchUser()
+        usernameTextField.text = user.username
+        emailTextField.text = user.email
+        firstnameTextField.text = user.first_name
+        lastnameTextField.text = user.last_name
+        
         usernameTextField.delegate = self
-        passwordTextField.delegate = self
+        emailTextField.delegate = self
+        firstnameTextField.delegate = self
+        lastnameTextField.delegate = self
     }
     
-    @IBAction func loginButton(_ sender: Any) {
-        let user = User(username: username, password: password)
-        print(username, password)
-        UserAPIManager.shared.authenticateUser(user: user) { token, error in
-            if let token = token {
-                print("Successfully authenticated. JWT token: \(token)")
-                self.login(withToken: token)
-            } else if let error = error {
-                print("Error during authentication: \(error)")
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == firstnameTextField {
+            if let text = textField.text {
+                user.first_name = text
+                print(text + "text maken 1")
+            }
+        }
+        if textField == lastnameTextField {
+            if let text = textField.text {
+                user.last_name = text
+                print(text + "text maken 1")
+            }
+        }
+        return true
+    }
+    
+    func fetchUser() {
+        UserAPIManager.shared.fetchUserProfile { result in
+            switch result {
+            case .success(let userProfile):
+                self.user = userProfile
+                DispatchQueue.main.async {
+                    self.usernameTextField.text = self.user.username
+                    self.emailTextField.text = self.user.email
+                    self.firstnameTextField.text = self.user.first_name
+                    self.lastnameTextField.text = self.user.last_name
+                }
+                print(self.user)
+            case .failure(let error):
+                print("Error fetching user profile: \(error)")
             }
         }
     }
     
-    func login(withToken token: String) {
-        UserAPIManager.shared.saveToken(token)
-        UserAPIManager.shared.setAuthenticated(true)
-    
-        DispatchQueue.main.async {
-            self.performSegue(withIdentifier: "goToNext", sender: self)
-        }
+    @IBAction func saveButton(_ sender: Any) {
     }
+    
+    @IBAction func logoutButton(_ sender: Any) {
+        UserAPIManager.shared.setAuthenticated(false)
+    }
+    
     
     /*
     // MARK: - Navigation
@@ -51,20 +80,5 @@ class ProfileViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-}
-extension ProfileViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == usernameTextField {
-            if let text = usernameTextField.text as NSString? {
-                let newText = text.replacingCharacters(in: range, with: string)
-                username = newText
-            }
-        } else if textField == passwordTextField {
-            if let text = passwordTextField.text as NSString? {
-                let newText = text.replacingCharacters(in: range, with: string)
-                password = newText
-            }
-        }
-        return true
-    }
+
 }
