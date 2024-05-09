@@ -59,7 +59,7 @@ class EventViewController: UIViewController {
     
     @IBAction func notificatoinButton(_ sender: Any) {
         DispatchQueue.main.async {
-            self.performSegue(withIdentifier: "goToNot", sender: self)
+            self.performSegue(withIdentifier: "goToNotification", sender: self)
         }
         
     }

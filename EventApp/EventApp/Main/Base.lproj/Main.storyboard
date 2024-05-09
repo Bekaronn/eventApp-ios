@@ -21,17 +21,16 @@
                                 <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                                 <items>
                                     <navigationItem title="Афиша" id="Mbd-P3-zxz">
-                                        <barButtonItem key="rightBarButtonItem" style="done" id="v8R-W0-Usl">
-                                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="F7W-2S-ZRn">
-                                                <rect key="frame" x="290" y="5" width="87" height="34.333333333333336"/>
+                                        <barButtonItem key="rightBarButtonItem" style="plain" id="SpL-hL-GPI">
+                                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="kNV-fK-iQr">
+                                                <rect key="frame" x="327.33333333333331" y="5" width="49.666666666666686" height="34.333333333333336"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="tintColor" systemColor="systemIndigoColor"/>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" image="bell" catalog="system"/>
+                                                <buttonConfiguration key="configuration" style="plain" image="bell" catalog="system" title=""/>
+                                                <connections>
+                                                    <action selector="notificatoinButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3xy-mW-Mlw"/>
+                                                </connections>
                                             </button>
-                                            <connections>
-                                                <action selector="notificatoinButton:" destination="BYZ-38-t0r" id="gC7-vN-D7a"/>
-                                            </connections>
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>
@@ -149,7 +148,7 @@
                         <outlet property="filterButton" destination="l4c-7j-Jbu" id="8F4-SV-9A8"/>
                         <outlet property="searchBar" destination="U1G-m6-OVc" id="n4c-Hg-v3P"/>
                         <segue destination="Je4-EB-Y4I" kind="show" identifier="goToDetail" id="RJL-0L-P9n"/>
-                        <segue destination="1aa-3L-siE" kind="show" identifier="goToNot" id="5at-Rq-e2l"/>
+                        <segue destination="1aa-3L-siE" kind="show" identifier="goToNotification" id="5at-Rq-e2l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
